@@ -1,5 +1,7 @@
 import sqlite3 as sql
 from datetime import date
+import pandas as pd
+from pandas import ExcelWriter
 
 class Finance:
 
@@ -9,6 +11,7 @@ class Finance:
         self.expense_amount = 0
         self.income_name = "None"
         self.income_amount = 0
+        self.df = ""
 
 
     def showFinance(self):
@@ -36,12 +39,26 @@ class Finance:
         db.commit()
         db.close()
 
+    def read_from_db(self):
+        db = sql.connect("Finance.db")
+        self.df = pd.read_sql_query("SELECT * FROM Finance", db)
+        print(self.df)
+
+
+    def write_to_excel(self):
+        writer = ExcelWriter("Finance.xlsx")
+        self.df.to_excel(writer, 'Sheet1')
+        writer.save()
+
+
 def procedure():
     f = Finance()
     f.showFinance()
     f.add_expense("Fruits", 100)
     f.add_income("Pocket", 300)
     f.write_to_db()
+    f.read_from_db()
+    f.write_to_excel()
 
 
 if __name__ == "__main__":

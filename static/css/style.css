@@ -1,0 +1,21 @@
+#Titlebar{
+    padding-top : 10px;
+    background-color : #FF0000;
+    height : 100px;
+}
+
+body{
+    background-color: #b8beea;
+}
+
+#login-form{
+    text-align: center;
+}
+
+#loginBlock{
+    width: 100%;
+}
+
+#Login{
+    width: 50%;
+}

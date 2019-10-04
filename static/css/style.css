@@ -4,16 +4,13 @@
     height : 100px;
 }
 
-#ftable{
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-
 #ltext{
   font-weight: bold;
   font-size: 30px;
+}
+
+#ftable{
+  width: 300px;
 }
 
 #buttons{

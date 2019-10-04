@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %} Finances : Signup {% endblock %}
+
+{% block body %}
+<div id="loginBlock">
+    <p align="center" id="ltext"> Sign Up </p>
+    <div id = "Login">
+        <form method="post" action = "http://127.0.0.1:5000/signup-success" id="login-form" align="center">
+            <input name = "Name" style="height: 25px; width: 300px;" type="text" placeholder="Name">
+            <input name = "contact" style="height: 25px; width: 300px;" type="text" placeholder="Contact">
+            <input name = "uname" style="height: 25px; width: 300px;" type="text" placeholder="User Name">
+            <input name = "passwd" style="height: 25px; width: 300px;" type="password" placeholder="Password">
+            <input name = "city" style="height: 25px; width: 300px;" type="text" placeholder="City">
+            <input name = "email" style="height: 25px; width: 300px;" type="email" placeholder="Email">
+            <div id="buttons">
+              <button id = "signup-btn" onclick="javascript: form.action='http://127.0.0.1:5000/signup-success';"> Sign Up </button>
+            </div>
+        </form>
+      </div>
+</div>
+
+
+
+{% endblock %}

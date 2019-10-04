@@ -5,13 +5,17 @@
 
 {% block body %}
 <div id="loginBlock">
+    <p align="center" id="ltext"> Login </p>
     <div id = "Login">
-        <form id="login-form">
-            <input type="text" placeholder="User Name "> <br>
-            <input type="password" placeholder="Password">
-
+        <form method="post" id="login-form" align="center">
+            <input name = "usname" style="height: 25px; width: 300px;" type="text" placeholder="User Name ">
+            <input name = "passwd" style="height: 25px; width: 300px;" type="password" placeholder="Password">
+            <div id="buttons">
+              <button id = "signup-btn" onclick="javascript: form.action='http://127.0.0.1:5000/signup';"> Sign Up </button>
+              <button id = "login-btn" onclick="javascript: form.action='http://127.0.0.1:5000/login-success';"> Login </button>
+            </div>
         </form>
-</div>
+      </div>
 </div>
 
 {% endblock %}

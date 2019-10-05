@@ -51,20 +51,34 @@ def log_success():
     check = temp[0][4]
 
     cat_id = []
-    amount = []
-    cat_name = []
+    eamount = []
+    ecat_name = []
+
+    iamount = []
+    icat_name = []
 
     cur.execute("SELECT * FROM Expenses WHERE ID = {}".format(id))
     exp = cur.fetchall()
+    cur.execute("SELECT * FROM Income WHERE ID = {}".format(id))
+    inc = cur.fetchall()
+
+    print("INc : " + str(inc))
+
 
     if check == password:
         for i in range(len(exp)):
-            amount.append(exp[i][3])
+            eamount.append(exp[i][3])
             cur.execute("SELECT * FROM Categories WHERE Cat_ID = '{}'".format(exp[i][1]))
-            cat_name.append(cur.fetchall()[0][1])
+            ecat_name.append(cur.fetchall()[0][1])
 
-        data = zip(cat_name, amount)
-        return render_template("home.html", Name = username, data = data)
+        for i in range(len(inc)):
+            iamount.append(inc[i][3])
+            cur.execute("SELECT * FROM Income_category WHERE ICat_ID = '{}'".format(inc[i][1]))
+            icat_name.append(cur.fetchall()[0][1])
+
+        data1 = zip(ecat_name, eamount)
+        data2 = zip(icat_name, iamount)
+        return render_template("home.html", Name = username, data1 = data1, data2 = data2)
     else:
         return render_template("login.html")
 
@@ -77,6 +91,125 @@ def add_expense():
 @app.route("/remove_expense", methods = ['GET', 'POST'])
 def remove_expense():
     return render_template("remove_expense.html")
+
+@app.route("/add_income", methods = ['GET', 'POST'])
+def add_income():
+    return render_template("add_income.html")
+
+@app.route("/remove_income", methods = ['GET', 'POST'])
+def remove_income():
+    return render_template("remove_income.html")
+
+@app.route("/iremove_success", methods = ['GET', 'POST'])
+def iremove_success():
+    ename = request.form['ename']
+
+    db = pymysql.connect("localhost", "aayush", "deadpool", "Finance")
+    cur = db.cursor()
+
+    cur.execute("SELECT Income_category.ICat_ID FROM Income_category, Income WHERE ID = {} AND Income_category.ICat_ID = Income.ICat_ID AND Income_category.I_name = '{}'".format(id, ename))
+    temp = cur.fetchall()
+    print(temp)
+    catid = []
+
+    for i in range(len(temp)):
+        catid.append(int(temp[i][0]))
+
+    cur.execute("DELETE FROM Income WHERE ICat_ID = {}".format(catid[0]))
+    db.commit()
+
+    cur.execute("SELECT * FROM Expenses WHERE ID = {}".format(id))
+    temp = cur.fetchall()
+
+    cur.execute("SELECT * FROM Income WHERE ID = {}".format(id))
+    temp1 = cur.fetchall()
+
+    name = []
+    amt = []
+
+    name2 = []
+    amt2 = []
+
+    for i in range(len(temp)):
+        cur.execute("SELECT * FROM Categories WHERE Cat_ID = {}".format(temp[i][1]))
+        name.append(cur.fetchall()[0][1])
+        amt.append(temp[i][3])
+
+    for i in range(len(temp1)):
+        cur.execute("SELECT * FROM Income_category WHERE ICat_ID = {}".format(temp1[i][1]))
+        name2.append(cur.fetchall()[0][1])
+        amt2.append(temp1[i][3])
+
+    print(name)
+    print(amt)
+    data1 = zip(name, amt)
+    data2 = zip(name2, amt2)
+
+    return render_template("home.html", data1 = data1, data2 = data2)
+
+
+@app.route('/iadd_success', methods = ['GET', 'POST'])
+def iadd_success():
+    global id
+    global d1
+
+    cat = request.form['income']
+    amount = request.form['amount']
+
+    db = pymysql.connect("localhost", "aayush", "deadpool", "Finance")
+    cur = db.cursor()
+
+    cur.execute("SELECT I_name FROM Income_category")
+    temp = cur.fetchall()[0]
+
+    catid = 1
+
+    cur.execute("SELECT ICat_ID FROM Income_category WHERE I_name = '{}'".format(cat))
+    temp1 = cur.fetchall()
+
+    if temp1 == ():
+        cur.execute("SELECT max(ICat_ID) FROM Income_category")
+        catid = cur.fetchall()
+        catid = catid[0][0]
+        catid += 1
+        cur.execute("INSERT INTO Income_category (ICat_ID, I_name) VALUES ('{}', '{}')".format(catid, cat))
+        db.commit()
+
+    else:
+        catid = temp1[0][0]
+
+    cur.execute("INSERT INTO Income (ID, ICat_ID, Date, Amount) VALUES ('{}', '{}', '{}', '{}')".format(id, catid, d1, amount))
+    db.commit()
+
+    cur.execute("SELECT * FROM Expenses WHERE ID = {}".format(id))
+    temp = cur.fetchall()
+
+    cur.execute("SELECT * FROM Income WHERE ID = {}".format(id))
+    temp1 = cur.fetchall()
+
+    name = []
+    amt = []
+
+    name2 = []
+    amt2 = []
+    print("ALL GOOD")
+
+    for i in range(len(temp)):
+        cur.execute("SELECT * FROM Categories WHERE Cat_ID = {}".format(temp[i][1]))
+        name.append(cur.fetchall()[0][1])
+        amt.append(temp[i][3])
+
+    for i in range(len(temp1)):
+        cur.execute("SELECT * FROM Income_category WHERE ICat_ID = {}".format(temp1[i][1]))
+        name2.append(cur.fetchall()[0][1])
+        amt2.append(temp1[i][3])
+
+    print(name)
+    print(amt)
+    data1 = zip(name, amt)
+    data2 = zip(name2, amt2)
+
+    return render_template("home.html", data1 = data1, data2 = data2)
 
 
 @app.route("/remove_success", methods = ['GET', 'POST'])
@@ -98,17 +231,32 @@ def remove_success():
 
     cur.execute("SELECT * FROM Expenses WHERE ID = {}".format(id))
     temp = cur.fetchall()
+
+    cur.execute("SELECT * FROM Income WHERE ID = {}".format(id))
+    temp1 = cur.fetchall()
+
     name = []
     amt = []
+
+    name2 = []
+    amt2 = []
 
     for i in range(len(temp)):
         cur.execute("SELECT * FROM Categories WHERE Cat_ID = {}".format(temp[i][1]))
         name.append(cur.fetchall()[0][1])
         amt.append(temp[i][3])
 
-    data = zip(name, amt)
+    for i in range(len(temp1)):
+        cur.execute("SELECT * FROM Income_category WHERE ICat_ID = {}".format(temp1[i][1]))
+        name2.append(cur.fetchall()[0][1])
+        amt2.append(temp1[i][3])
 
-    return render_template("home.html", data = data)
+    print(name)
+    print(amt)
+    data1 = zip(name, amt)
+    data2 = zip(name2, amt2)
+
+    return render_template("home.html", data1 = data1, data2 = data2)
 
 
 @app.route("/add_success", methods=["GET", "POST"])
@@ -146,19 +294,32 @@ def add_success():
 
     cur.execute("SELECT * FROM Expenses WHERE ID = {}".format(id))
     temp = cur.fetchall()
+
+    cur.execute("SELECT * FROM Income WHERE ID = {}".format(id))
+    temp1 = cur.fetchall()
+
     name = []
     amt = []
+
+    name2 = []
+    amt2 = []
 
     for i in range(len(temp)):
         cur.execute("SELECT * FROM Categories WHERE Cat_ID = {}".format(temp[i][1]))
         name.append(cur.fetchall()[0][1])
         amt.append(temp[i][3])
 
+    for i in range(len(temp1)):
+        cur.execute("SELECT * FROM Income_category WHERE ICat_ID = {}".format(temp1[i][1]))
+        name2.append(cur.fetchall()[0][1])
+        amt2.append(temp1[i][3])
+
     print(name)
     print(amt)
-    data = zip(name, amt)
+    data1 = zip(name, amt)
+    data2 = zip(name2, amt2)
 
-    return render_template("home.html", data = data)
+    return render_template("home.html", data1 = data1, data2 = data2)
 
 
 

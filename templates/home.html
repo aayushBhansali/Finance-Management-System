@@ -4,12 +4,12 @@
 
 {%block body %}
 
-<div id = "Main-finance" class="panel">
+<div id = "Main-finance" align = "center">
     <p> This Month </p>
     <table class= "table table-hover" id = "ftable" align="center">
-            <div id= "tab_data">
+            <div id= "tab_data" align="center">
               <p style="font-size: 25px; padding-top: 50px;"> Expenses </p>
-              {% for item, amt in data %}
+              {% for item, amt in data1 %}
                   <tr">
                       <td> {{item}} </td>
                       <td> {{amt}} </td>
@@ -21,6 +21,24 @@
       <form>
         <button class="btn btn-primary" onclick="javascript: form.action='http://127.0.0.1:5000/add_expense';"> Add </button>
         <button class="btn btn-success" onclick="javascript: form.action='http://127.0.0.1:5000/remove_expense';"> Remove </button>
+      </form>
+    </div>
+
+    <table class= "table table-hover" id = "ftable" align="center">
+            <div id= "tab_data">
+              <p style="font-size: 25px; padding-top: 50px;"> Income </p>
+              {% for item, amt in data2 %}
+                  <tr">
+                      <td> {{item}} </td>
+                      <td> {{amt}} </td>
+                  </tr>
+              {% endfor %}
+            </div>
+    </table>
+    <div id="buttons" style="display: inline-block">
+      <form>
+        <button class="btn btn-primary" onclick="javascript: form.action='http://127.0.0.1:5000/add_income';"> Add </button>
+        <button class="btn btn-success" onclick="javascript: form.action='http://127.0.0.1:5000/remove_income';"> Remove </button>
       </form>
     </div>
 </div>

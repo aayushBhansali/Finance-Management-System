@@ -19,6 +19,17 @@
 
 #ftable{
   font-size: 20px !important;
+  overflow: auto;
+}
+
+#expense_table{
+  height: 200px;
+  overflow: auto;
+}
+
+#income_table{
+  height: 200px;
+  overflow: auto;
 }
 
 #Main-finance{

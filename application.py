@@ -18,6 +18,10 @@ def home():
 def signup():
     return render_template("signup.html")
 
+@app.route("/logout", methods=['GET', 'POST'])
+def logout():
+    return render_template("login.html")
+
 
 @app.route("/signup-success", methods = ['POST', 'GET'])
 def signup_success():

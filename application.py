@@ -3,7 +3,7 @@ import pymysql
 from datetime import date
 
 today = date.today()
-d1 = today.strftime("%d/%m/%y")
+d1 = today.strftime("%y/%m/%d")
 
 app = Flask(__name__)
 
@@ -324,10 +324,6 @@ def add_success():
     data2 = zip(name2, amt2)
 
     return render_template("home.html", data1 = data1, data2 = data2)
-
-
-
-
 
 
 if __name__ == "__main__":

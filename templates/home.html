@@ -7,19 +7,20 @@
 <div id = "Main-finance" align = "center">
     <p> This Month </p>
     <p style="font-size: 25px; padding-top: 50px;"> Expenses </p>
+
+    <!-- Expense Table -->
     <div id="expense_table">
       <table class= "table table-hover" id = "ftable"align="center">
-              <div id= "tab_data" align="center">
                 {% for item, amt in data1 %}
                     <tr">
                         <td> {{item}} </td>
                         <td> {{amt}} </td>
                     </tr>
                 {% endfor %}
-              </div>
       </table>
     </div>
 
+    <!-- Add/Remove Expenses Button -->
     <div id="buttons" style="display: inline-block">
       <form>
         <button class="btn btn-primary" onclick="javascript: form.action='http://127.0.0.1:5000/add_expense';"> Add </button>
@@ -28,19 +29,20 @@
     </div>
 
     <p style="font-size: 25px; padding-top: 50px;"> Income </p>
+
+    <!-- Icnome Table -->
     <div id = "income_table">
       <table class= "table table-hover" id = "ftable" align="center">
-              <div id= "tab_data">
                 {% for item, amt in data2 %}
                     <tr">
                         <td> {{item}} </td>
                         <td> {{amt}} </td>
                     </tr>
                 {% endfor %}
-              </div>
       </table>
     </div>
 
+    <!-- Add/Remove Income Buttons -->
     <div id="buttons" style="display: inline-block">
       <form>
         <button class="btn btn-primary" onclick="javascript: form.action='http://127.0.0.1:5000/add_income';"> Add </button>
@@ -48,9 +50,11 @@
       </form>
     </div>
 
+    <!-- Log Out Button -->
     <form>
       <button class="btn btn-danger" onclick="javascript: form.action='http://127.0.0.1:5000/logout';"> Log Out </button>
     </form>
+
 </div>
 
 {% endblock %}

@@ -11,9 +11,10 @@
     <!-- Expense Table -->
     <div id="expense_table">
       <table class= "table table-hover" id = "ftable"align="center">
-                {% for item, amt in data1 %}
-                    <tr">
-                        <td> {{item}} </td>
+                {% for item, amt, date in data1 %}
+                    <tr>
+                        <td style = "width: 300px;"> {{date}} </td>
+                        <td style = "text-align: left"> {{item}} </td>
                         <td> {{amt}} </td>
                     </tr>
                 {% endfor %}
@@ -33,9 +34,10 @@
     <!-- Icnome Table -->
     <div id = "income_table">
       <table class= "table table-hover" id = "ftable" align="center">
-                {% for item, amt in data2 %}
-                    <tr">
-                        <td> {{item}} </td>
+                {% for item, amt, date in data2 %}
+                    <tr>
+                        <td style = "width: 300px;"> {{date}}</td>
+                        <td style = "text-align: left"> {{item}} </td>
                         <td> {{amt}} </td>
                     </tr>
                 {% endfor %}

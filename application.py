@@ -49,7 +49,7 @@ def log_success():
     id = int(temp[0][0])
     check = temp[0][4]
 
-    cat_id, eamount, ecatname, iamount, icat_name = [], [], [], [], []
+    cat_id, eamount, ecatname, iamount, icat_name, date, date1 = [], [], [], [], [], [], []
 
     cur.execute("SELECT * FROM Expenses WHERE ID = {}".format(id))
     exp = cur.fetchall()
@@ -60,15 +60,17 @@ def log_success():
         for i in range(len(exp)):
             eamount.append(exp[i][3])
             cur.execute("SELECT * FROM Categories WHERE Cat_ID = '{}'".format(exp[i][1]))
-            ecat_name.append(cur.fetchall()[0][1])
+            ecatname.append(cur.fetchall()[0][1])
+            date.append(exp[i][2])
 
         for i in range(len(inc)):
             iamount.append(inc[i][3])
             cur.execute("SELECT * FROM Income_category WHERE ICat_ID = '{}'".format(inc[i][1]))
             icat_name.append(cur.fetchall()[0][1])
+            date1.append(inc[i][2])
 
-        data1 = zip(ecatname, eamount)
-        data2 = zip(icat_name, iamount)
+        data1 = zip(ecatname, eamount, date)
+        data2 = zip(icat_name, iamount, date1)
         return render_template("home.html", Name = username, data1 = data1, data2 = data2)
     else:
         return render_template("login.html")
@@ -223,20 +225,22 @@ def display():
     cur.execute("SELECT * FROM Income WHERE ID = {}".format(id))
     temp1 = cur.fetchall()
 
-    name, amt, name2, amt2 = [], [], [], []
+    name, amt, date, name2, amt2, date2 = [], [], [], [], [], []
 
     for i in range(len(temp)):
         cur.execute("SELECT * FROM Categories WHERE Cat_ID = {}".format(temp[i][1]))
         name.append(cur.fetchall()[0][1])
         amt.append(temp[i][3])
+        date.append(temp[i][2])
 
     for i in range(len(temp1)):
         cur.execute("SELECT * FROM Income_category WHERE ICat_ID = {}".format(temp1[i][1]))
         name2.append(cur.fetchall()[0][1])
         amt2.append(temp1[i][3])
+        date2.append(temp1[i][2])
 
-    data1 = zip(name, amt)
-    data2 = zip(name2, amt2)
+    data1 = zip(name, amt, date)
+    data2 = zip(name2, amt2, date2)
 
     return 'home.html', data1, data2
 

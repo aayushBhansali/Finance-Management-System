@@ -67,7 +67,7 @@ def log_success():
             cur.execute("SELECT * FROM Income_category WHERE ICat_ID = '{}'".format(inc[i][1]))
             icat_name.append(cur.fetchall()[0][1])
 
-        data1 = zip(ecat_name, eamount)
+        data1 = zip(ecatname, eamount)
         data2 = zip(icat_name, iamount)
         return render_template("home.html", Name = username, data1 = data1, data2 = data2)
     else:
